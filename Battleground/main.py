@@ -1,4 +1,4 @@
-import Battleground
+import battleground
 
 if __name__ == '__main__':
-    Battleground.battle()
+    battleground.battle()
