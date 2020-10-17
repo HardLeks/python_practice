@@ -8,20 +8,37 @@ class Warrior(object):
         self.attack = ap
 
     def __del__(self):
-        print("%s отправляется в Вальгаллу" % (self.get_name()))
+        print("%s отправляется в Вальгаллу" % self.name)
 
     def get_hit(self, enemy: Warrior):
-        self.health = self.health - enemy.get_attack()
-        print("%s получил %d урона от %s" % (self.get_name(), enemy.get_attack(), enemy.name))
-
-    def get_attack(self):
-        return self.attack
-
-    def get_health(self):
-        return self.health
-
-    def get_name(self):
-        return self.name
+        self.health = self.health - enemy.attack
+        print("%s получил %d урона от %s" % (self.name, enemy.attack, enemy.name))
 
     def check_death(self):
         return self.health <= 0
+
+    # Блок геттеров
+    @property
+    def attack(self):
+        return self.__attack
+
+    @property
+    def health(self):
+        return self.__health
+
+    @property
+    def name(self):
+        return self.__name
+
+    # Блок сеттеров
+    @attack.setter
+    def attack(self, ap):
+        self.__attack = ap
+
+    @health.setter
+    def health(self, hp):
+        self.__health = hp
+
+    @name.setter
+    def name(self, n):
+        self.__name = n

@@ -8,7 +8,7 @@ def battle():
     print('\t\t Турнир начался!')
     print('Бойцы на арене:')
     for challenger in list_of_war:
-        print('\t%s с атакой равной %d' % (challenger.get_name(), challenger.get_attack()))
+        print('\t%s с атакой равной %d' % (challenger.name, challenger.attack))
 
     print('\n\t\t Начать битву!\n')
     print('========== Журнал боя ==========')
@@ -23,5 +23,5 @@ def battle():
             del list_of_war[r1]
     print('================================')
     print('\n\t\t Турнир окончен!')
-    print('\tПобеду одерживает %s!' % (list_of_war.pop().get_name()))
+    print('\tПобеду одерживает %s!' % list_of_war.pop().name)
     print('\tНо герои не живут вечно!')
