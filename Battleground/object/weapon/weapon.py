@@ -15,6 +15,9 @@ class Weapon:
     def __le__(self, other):
         return self.get_damage() < other.get_damage()
 
+    def __gt__(self, other):
+        return self.get_damage() > other.get_damage()
+
     # Блок геттеров
     @property
     def name(self):

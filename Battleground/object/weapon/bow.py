@@ -1,4 +1,4 @@
-from weapon import Weapon
+from object.weapon.weapon import Weapon
 import random
 
 

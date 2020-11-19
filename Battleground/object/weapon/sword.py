@@ -1,4 +1,4 @@
-from weapon import Weapon
+from object.weapon.weapon import Weapon
 import random
 
 
@@ -13,7 +13,10 @@ class Sword(Weapon):
         self.durability = durability
 
     def get_damage(self):
-        return self.damage * self.durability
+        if self.durability > 0:
+            return self.damage * self.durability
+        else:
+            return 0
 
     def deal_damage(self, r=random.random()):
         out_damage = self.get_damage()
