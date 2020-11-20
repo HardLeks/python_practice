@@ -2,11 +2,11 @@ from __future__ import annotations
 
 
 class Warrior(object):
-    def __init__(self, name, hp=100, ap=1, arsenal=[]):
+    def __init__(self, name, hp=100, ap=1):
         self.name = name
         self.health = hp
         self.attack = ap
-        self.arsenal = arsenal
+        self.arsenal = list()
         if len(self.arsenal) > 0:
             list.sort(self.arsenal, reverse=True)
 
@@ -14,11 +14,11 @@ class Warrior(object):
         print("<death> %s отправляется в Вальгаллу" % self.name)
 
     def get_hit(self, enemy: Warrior, damage, weapon=None):
-        self.health = self.health - damage
         if weapon is None:
             print("<fight> %s (%0.1f hp) <--%0.1f-- %s" % (self.name, self.health, damage, enemy.name))
         else:
             print("<fight> %s (%0.1f hp) <--%0.1f-- %s (%s)" % (self.name, self.health, damage, enemy.name, weapon))
+        self.health = self.health - damage
 
     def deal_damage(self, target: Warrior):
         damage = 0
