@@ -21,17 +21,26 @@ class Warrior(object):
         damage = 0
         if len(self.arsenal) > 0:
             damage = self.arsenal[0].deal_damage()
+            self.drop_weapon(self.arsenal[0])
+            list.sort(self.arsenal, reverse=True)
         if damage < self.attack:
             damage = self.attack
 
         target.get_hit(self, damage)
-        list.sort(self.arsenal, reverse=True)
+
+    def drop_weapon(self, weapon):
+        if weapon.durability <= 0:
+            self.arsenal.remove(weapon)
 
     def check_death(self):
         return self.health <= 0
 
+    def loot_weapon(self, loot=[]):
+        self.arsenal.extend(loot)
+        list.sort(self.arsenal, reverse=True)
+
     def print_arsenal(self):
-        print("Инвентарь %s:" % (self.name))
+        print("Инвентарь %s:" % self.name)
         if len(self.arsenal) == 0:
             print('\tПуст')
         for item in self.arsenal:
