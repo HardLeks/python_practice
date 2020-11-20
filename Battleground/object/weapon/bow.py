@@ -18,8 +18,12 @@ class Bow(Weapon):
     def deal_damage(self, r=random.random()):
         if r <= self.accuracy:
             self.durability = self.durability - 0.1
+            if self.durability <= 0:
+                print('<weapon>\t%s почти сломано!' % self.name)
             return self.damage
         self.durability = self.durability - 0.1
+        if self.durability <= 0:
+            print('<weapon>\t%s почти сломано!' % self.name)
         return 0
 
     # Блок геттеров

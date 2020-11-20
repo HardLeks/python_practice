@@ -7,15 +7,18 @@ import random
 def battle():
     list_of_weapon = [
         Sword('Zatochka', 2, 1),
-        Sword('Black Knight Greatsword', 20, 0.5),
+        Sword('Black Knight Greatsword', 30, 0.5),
         Bow('Rogatka', 2, 1, 0.8),
         Bow('True shot longbow', 30, 0.2, 1)
     ]
 
     list_of_war = [
-        Warrior('Sonic'),
-        Warrior('Tales'),
-        Warrior('Knuckles')
+        Warrior('Sonic', 50, 10),
+        Warrior('Tales', 50, 10),
+        Warrior('Knuckles', 50, 10),
+        Warrior('Emmie', 50, 10),
+        Warrior('Eggman', 50, 10),
+        Warrior('Shadow', 50, 10)
     ]
 
     print('\t\t Турнир начался!')
@@ -23,6 +26,7 @@ def battle():
     for challenger in list_of_war:
         print('\t%s с атакой равной %d' % (challenger.name, challenger.attack))
 
+    print('\n')
     for weapon in list_of_weapon:
         r1 = random.choice(list_of_war)
         r1.loot_weapon([weapon])
@@ -37,6 +41,7 @@ def battle():
 
         list_of_war[r1].deal_damage(list_of_war[r2])
         if list_of_war[r2].check_death():
+            list_of_war[r1].loot_weapon(list_of_war[r2].arsenal)
             del list_of_war[r2]
     print('================================')
     print('\n\t\t Турнир окончен!')

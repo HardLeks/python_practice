@@ -11,14 +11,14 @@ class Warrior(object):
             list.sort(self.arsenal, reverse=True)
 
     def __del__(self):
-        print("%s отправляется в Вальгаллу" % self.name)
+        print("<death> %s отправляется в Вальгаллу" % self.name)
 
     def get_hit(self, enemy: Warrior, damage, weapon=None):
         self.health = self.health - damage
         if weapon is None:
-            print("%s получил %0.1f урона от %s" % (self.name, damage, enemy.name))
+            print("<fight> %s (%0.1f hp) <--%0.1f-- %s" % (self.name, self.health, damage, enemy.name))
         else:
-            print("%s получил %0.1f урона от %s с помощью %s" % (self.name, damage, enemy.name, weapon))
+            print("<fight> %s (%0.1f hp) <--%0.1f-- %s (%s)" % (self.name, self.health, damage, enemy.name, weapon))
 
     def deal_damage(self, target: Warrior):
         damage = 0
@@ -44,7 +44,7 @@ class Warrior(object):
         self.arsenal.extend(loot)
         list.sort(self.arsenal, reverse=True)
         for item in loot:
-            print('%s подбирает %s!' % (self.name, item.name))
+            print('<loot>\t%s подбирает %s!' % (self.name, item.name))
 
     def print_arsenal(self):
         print("Инвентарь %s:" % self.name)
