@@ -13,20 +13,25 @@ class Warrior(object):
     def __del__(self):
         print("%s отправляется в Вальгаллу" % self.name)
 
-    def get_hit(self, enemy: Warrior, damage):
+    def get_hit(self, enemy: Warrior, damage, weapon=None):
         self.health = self.health - damage
-        print("%s получил %0.1f урона от %s" % (self.name, damage, enemy.name))
+        if weapon is None:
+            print("%s получил %0.1f урона от %s" % (self.name, damage, enemy.name))
+        else:
+            print("%s получил %0.1f урона от %s с помощью %s" % (self.name, damage, enemy.name, weapon))
 
     def deal_damage(self, target: Warrior):
         damage = 0
+        weapon_name = None
         if len(self.arsenal) > 0:
             damage = self.arsenal[0].deal_damage()
+            weapon_name = self.arsenal[0].name
             self.drop_weapon(self.arsenal[0])
             list.sort(self.arsenal, reverse=True)
         if damage < self.attack:
             damage = self.attack
 
-        target.get_hit(self, damage)
+        target.get_hit(self, damage, weapon_name)
 
     def drop_weapon(self, weapon):
         if weapon.durability <= 0:
@@ -38,6 +43,8 @@ class Warrior(object):
     def loot_weapon(self, loot=[]):
         self.arsenal.extend(loot)
         list.sort(self.arsenal, reverse=True)
+        for item in loot:
+            print('%s подбирает %s!' % (self.name, item.name))
 
     def print_arsenal(self):
         print("Инвентарь %s:" % self.name)

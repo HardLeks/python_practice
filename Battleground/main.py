@@ -1,9 +1,9 @@
 from object.weapon.bow import Bow
 from object.weapon.sword import Sword
 from object.warrior import Warrior
+import battleground
 
-if __name__ == '__main__':
-    ##battleground.battle()
+def test():
     bow = Bow('Hunters Bow', 15, 0.2, 0.5)
     sword1 = Sword('Gladius', 15, 0.2)
     sword2 = Sword('Demons Edge', 100, 0.1)
@@ -25,3 +25,7 @@ if __name__ == '__main__':
             break
 
     war1.print_arsenal()
+
+if __name__ == '__main__':
+    battleground.battle()
+    #test()
