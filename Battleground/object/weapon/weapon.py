@@ -1,8 +1,9 @@
 class Weapon:
-    def __init__(self, name, damage, durability):
+    def __init__(self, name, damage, durability, enchant):
         self.name = name
         self.damage = damage
         self.durability = durability
+        self.enchant = enchant
 
     def __del__(self):
         pass
@@ -32,6 +33,10 @@ class Weapon:
     def durability(self):
         return self.__durability
 
+    @property
+    def enchant(self):
+        return self.__enchant
+
     # Блок сеттеров
     @name.setter
     def name(self, name):
@@ -44,3 +49,7 @@ class Weapon:
     @durability.setter
     def durability(self, dur):
         self.__durability = dur
+
+    @enchant.setter
+    def enchant(self, en):
+        self.__enchant = en

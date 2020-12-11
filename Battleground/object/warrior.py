@@ -2,10 +2,13 @@ from __future__ import annotations
 
 
 class Warrior(object):
-    def __init__(self, name, hp=100, ap=1):
+    def __init__(self, name, hp=100, ap=1, armor=None):
         self.name = name
         self.health = hp
         self.attack = ap
+        self.state = 'normal'
+        self.state_count = 0
+        self.armor = armor
         self.arsenal = list()
         if len(self.arsenal) > 0:
             list.sort(self.arsenal, reverse=True)
@@ -13,25 +16,32 @@ class Warrior(object):
     def __del__(self):
         print("<death> %s отправляется в Вальгаллу" % self.name)
 
-    def get_hit(self, enemy: Warrior, damage, weapon=None):
+    def get_hit(self, enemy: Warrior, damage, weapon=None, enchant=None):
         if weapon is None:
             print("<fight> %s (%0.1f hp) <--%0.1f-- %s" % (self.name, self.health, damage, enemy.name))
         else:
             print("<fight> %s (%0.1f hp) <--%0.1f-- %s (%s)" % (self.name, self.health, damage, enemy.name, weapon))
         self.health = self.health - damage
 
-    def deal_damage(self, target: Warrior):
-        damage = 0
-        weapon_name = None
-        if len(self.arsenal) > 0:
-            damage = self.arsenal[0].deal_damage()
-            weapon_name = self.arsenal[0].name
-            self.drop_weapon(self.arsenal[0])
-            list.sort(self.arsenal, reverse=True)
-        if damage < self.attack:
-            damage = self.attack
+        if self.check_armor(enchant):
+            self.set_state_count(enchant, 2)
 
-        target.get_hit(self, damage, weapon_name)
+
+    def deal_damage(self, target: Warrior):
+        if self.can_attack():
+            damage = 0
+            weapon_name = None
+            enchant = None
+            if len(self.arsenal) > 0:
+                damage = self.arsenal[0].deal_damage()
+                weapon_name = self.arsenal[0].name
+                enchant = self.arsenal[0].enchant
+                self.drop_weapon(self.arsenal[0])
+                list.sort(self.arsenal, reverse=True)
+            if damage < self.attack:
+                damage = self.attack
+
+            target.get_hit(self, damage, weapon_name, enchant)
 
     def drop_weapon(self, weapon):
         if weapon.durability <= 0:
@@ -53,6 +63,32 @@ class Warrior(object):
         for item in self.arsenal:
             print("\t<%s> dps=%d" % (item.name, item.get_damage()))
 
+    def check_armor(self, enchant):
+        if enchant == self.armor:
+            return False
+        return True
+
+    def can_attack(self):
+        if self.state == 'normal':
+            return True
+        elif self.state == 'burn':
+            print("<state>\t%s обьят пламенем! Осталось %d ходов!" % (self.name, self.state_count))
+            self.health = self.health - 0.05*self.health
+            self.state_count = self.state_count - 1
+            if self.state_count == 0:
+                self.state = 'normal'
+            return True
+        elif self.state == 'freeze':
+            print("<state>\t%s заморожен! Осталось %d ходов!" % (self.name, self.state_count))
+            self.state_count = self.state_count - 1
+            if self.state_count == 0:
+                self.state = 'normal'
+            return False
+
+    def set_state_count(self, st='normal', r=0):
+        self.state = st
+        self.state_count = r
+
     # Блок геттеров
     @property
     def attack(self):
@@ -70,6 +106,14 @@ class Warrior(object):
     def arsenal(self):
         return self.__arsenal
 
+    @property
+    def state(self):
+        return self.__state
+
+    @property
+    def state_count(self):
+        return self.__state_count
+
     # Блок сеттеров
     @attack.setter
     def attack(self, ap):
@@ -86,3 +130,11 @@ class Warrior(object):
     @arsenal.setter
     def arsenal(self, ars):
         self.__arsenal = ars
+
+    @state.setter
+    def state(self, st):
+        self.__state = st
+
+    @state_count.setter
+    def state_count(self, st):
+        self.__state_count = st

@@ -8,8 +8,8 @@ import random
 # При нанесении урона (вызове функции deal_damage) учитывается шанс попадания.
 # Шанс попадания хранится в accuracy. Число должно быть в отрезке [0.0, 1.0]
 class Bow(Weapon):
-    def __init__(self, name, damage, durability, accuracy):
-        Weapon.__init__(self, name, damage, durability)
+    def __init__(self, name, damage, durability, accuracy, enchant='normal'):
+        Weapon.__init__(self, name, damage, durability, enchant)
         self.accuracy = accuracy
 
     def get_damage(self):

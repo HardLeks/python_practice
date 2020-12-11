@@ -8,8 +8,8 @@ import random
 # При нанесении урона (вызове функции deal_damage) учитывается прочность.
 # При нанесении удара оружие теряет 10% своей прочности с 50% вероятностью
 class Sword(Weapon):
-    def __init__(self, name, damage, durability):
-        Weapon.__init__(self, name, damage, durability)
+    def __init__(self, name, damage, durability, enchant='normal'):
+        Weapon.__init__(self, name, damage, durability, enchant)
 
     def get_damage(self):
         if self.durability > 0:
