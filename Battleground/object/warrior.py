@@ -2,13 +2,13 @@ from __future__ import annotations
 
 
 class Warrior(object):
-    def __init__(self, name, hp=100, ap=1, armor=None):
+    def __init__(self, name, hp=100, ap=1):
         self.name = name
         self.health = hp
         self.attack = ap
         self.state = 'normal'
         self.state_count = 0
-        self.armor = armor
+        self.armor = None
         self.arsenal = list()
         if len(self.arsenal) > 0:
             list.sort(self.arsenal, reverse=True)
@@ -18,14 +18,28 @@ class Warrior(object):
 
     def get_hit(self, enemy: Warrior, damage, weapon=None, enchant=None):
         if weapon is None:
-            print("<fight> %s (%0.1f hp) <--%0.1f-- %s" % (self.name, self.health, damage, enemy.name))
+            if self.armor is None or self.armor.hp == 0:
+                print("<fight> %s (%0.1f hp) <--%0.1f-- %s" % (self.name, self.health, damage, enemy.name))
+            else:
+                print("<fight> %s (%0.1f hp + %0.1f arm) <--%0.1f-- %s" % (
+                    self.name, self.health, self.armor.hp, damage, enemy.name))
         else:
-            print("<fight> %s (%0.1f hp) <--%0.1f-- %s (%s)" % (self.name, self.health, damage, enemy.name, weapon))
-        self.health = self.health - damage
+            if self.armor is None or self.armor.hp == 0:
+                print("<fight> %s (%0.1f hp) <--%0.1f-- %s (%s)" % (self.name, self.health, damage, enemy.name, weapon))
+            else:
+                print("<fight> %s (%0.1f hp + %0.1f arm) <--%0.1f-- %s (%s)" % (
+                    self.name, self.health, self.armor.hp, damage, enemy.name, weapon))
 
-        if self.check_armor(enchant):
+        if self.armor is None:
+            self.health = self.health - damage
+        else:
+            if self.armor.hp > 0:
+                self.armor.damage(damage)
+            else:
+                self.health = self.health - damage
+
+        if self.armor is not None and self.check_armor(enchant):
             self.set_state_count(enchant, 2)
-
 
     def deal_damage(self, target: Warrior):
         if self.can_attack():
@@ -63,17 +77,15 @@ class Warrior(object):
         for item in self.arsenal:
             print("\t<%s> dps=%d" % (item.name, item.get_damage()))
 
-    def check_armor(self, enchant):
-        if enchant == self.armor:
-            return False
-        return True
+    def check_armor(self, damage_type):
+        return self.armor.check_resist(damage_type)
 
     def can_attack(self):
         if self.state == 'normal':
             return True
         elif self.state == 'burn':
             print("<state>\t%s обьят пламенем! Осталось %d ходов!" % (self.name, self.state_count))
-            self.health = self.health - 0.05*self.health
+            self.health = self.health - 0.05 * self.health
             self.state_count = self.state_count - 1
             if self.state_count == 0:
                 self.state = 'normal'
@@ -86,6 +98,7 @@ class Warrior(object):
             return False
 
     def set_state_count(self, st='normal', r=0):
+        print("<state> \t%s получил статус %s на %d хода!" % (self.name, st, r))
         self.state = st
         self.state_count = r
 
